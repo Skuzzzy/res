@@ -26,6 +26,7 @@ class MathSpider(scrapy.Spider):
 
     def initial_parse(self, response):
         # Select all the links in the td of the table
+        # TODO Link Pattern
         link_snippets = response.selector.xpath('//table//td/a//@href').extract()
         links = [ root + snippet for snippet in link_snippets]
         print "\n".join(links)
@@ -60,12 +61,12 @@ class MathSpider(scrapy.Spider):
 
 
         # Grabbing the student id (their db index)
-        students = [student[student.index('=')+1:] for student in students_links]
+        students = [int(student[student.index('=')+1:]) for student in students_links]
 
         # Build person object
         person = Person()
         person['name'] = name
-        person['identifier'] = identifier
+        person['identifier'] = int(identifier)
         person['title'] = info[0]
         person['university'] = univ
         person['year'] = info[1]

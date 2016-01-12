@@ -69,7 +69,7 @@ class MathSpider(scrapy.Spider):
         person['identifier'] = int(identifier)
         person['title'] = info[0]
         person['university'] = univ
-        person['year'] = info[1]
+        person['year'] = int(info[1])
         person['dissertation'] = info[3]
         person['subject_classification'] = classification
         person['students'] = students

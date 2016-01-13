@@ -29,7 +29,7 @@ class MathSpider(scrapy.Spider):
         # TODO Link Pattern
         link_snippets = response.selector.xpath('//table//td/a//@href').extract()
         links = [ root + snippet for snippet in link_snippets]
-        print "\n".join(links)
+        # print "\n".join(links)
 	for link in links:
 	    yield scrapy.Request(link, callback=self.parse)
 

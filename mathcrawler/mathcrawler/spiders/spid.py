@@ -46,6 +46,15 @@ class MathSpider(scrapy.Spider):
 	subject_infos = main.xpath('./div/text()').extract() # Contains Subject Classification somewhere...
         students_links = response.selector.xpath('//table//td/a//@href').extract()
 
+        # This website doesn't have a good structure or label the its elements
+        # So I have to do this stuff, well it's likely that I'm just not seeing
+        # something basic, which would make this a lot cleaner
+        partial_advisors = main.xpath('./p/a')
+        links = partial_advisors.xpath('./@href').extract()
+        text = partial_advisors.xpath('./text()').extract()
+        unfiltered_advisors = zip(links, text)
+        advisors = [(pair[1], int(pair[0][10:])) for pair in unfiltered_advisors if pair[0].startswith('id.php?')]
+
         for part in subject_infos:
             # Locate the correct part
             looking_for = 'Mathematics Subject Classification'
@@ -73,6 +82,7 @@ class MathSpider(scrapy.Spider):
         person['dissertation'] = info[3]
         person['subject_classification'] = classification
         person['students'] = students
+        person['advisors'] = advisors
         # Grab advisor information as well?
 
         links = [ root + snippet for snippet in students_links]

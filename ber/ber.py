@@ -13,7 +13,7 @@ def obtain_review_info(page_content):
 
     user = soup.find('div', {'class': 'user'})
     user_link = user.div.p.a
-    user_name = user_link['href'].replace(r'/user/', '') # Should use regex but this is easy and should work every time
+    user_name = user_link['href'].replace(r'/user/', '') # This isn't a completly terrible way of doing this
     real_name = user_link.contents[0]
 
     content = soup.find('div', {'class': 'checkin box'})

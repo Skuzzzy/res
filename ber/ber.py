@@ -23,12 +23,13 @@ def obtain_review_info(page_content):
     brewery = beer.span.a.contents[0]
 
     timestamp = content.find('p', {'class': 'time'}).contents[0]
+    timestamp =  parse(timestamp)
+
     rating = content.findAll('span', {'class': re.compile('^rating')})
     rating_info = rating[0]['class'].split()[-1] # TODO Make this line not suck
-    rating_info = rating_info[1] + "." + rating_info[2:]
+    rating_info = rating_info[1] + "." + rating_info[2:] # TODO This line sucks too
 
     comment = content.find('p', {'class': 'comment'}).contents
-    timestamp =  parse(timestamp)
 
     return {
         'user_name' : user_name,

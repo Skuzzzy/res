@@ -5,7 +5,7 @@ from dateutil.parser import parse
 
 def grab_link_info(url):
     page = urllib2.urlopen(url)
-    print page
+    # print page
     return obtain_review_info(page.read())
 
 def obtain_review_info(page_content):

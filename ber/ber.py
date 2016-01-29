@@ -1,9 +1,11 @@
 from BeautifulSoup import BeautifulSoup
 import urllib2
 import re
+from dateutil.parser import parse
 
 def grab_link_info(url):
     page = urllib2.urlopen(url)
+    print page
     return obtain_review_info(page.read())
 
 def obtain_review_info(page_content):
@@ -12,32 +14,29 @@ def obtain_review_info(page_content):
     user = soup.find('div', {'class': 'user'})
     user_link = user.div.p.a
     user_name = user_link['href'].replace(r'/user/', '') # Should use regex but this is easy and should work every time
-    real_name = user_link.contents
+    real_name = user_link.contents[0]
 
     content = soup.find('div', {'class': 'checkin box'})
     beer = content.find('div', {'class': 'beer'})
 
-    beer_name = beer.p.a.contents # list of 1 len
-    brewery = beer.span.a.contents # list of 1 len
+    beer_name = beer.p.a.contents[0]
+    brewery = beer.span.a.contents[0]
 
-    timestamp = content.find('p', {'class': 'time'}).contents
+    timestamp = content.find('p', {'class': 'time'}).contents[0]
     rating = content.findAll('span', {'class': re.compile('^rating')})
     rating_info = rating[0]['class'].split()[-1] # TODO Make this line not suck
-    print rating_info
+    rating_info = rating_info[1] + "." + rating_info[2:]
 
-    # print rating_info
-    # print soup
     comment = content.find('p', {'class': 'comment'}).contents
-    if comment:
-        print comment[0]
+    timestamp =  parse(timestamp)
 
-    print "what"
     return {
         'user_name' : user_name,
-        'real_name' : real_name[0],
-        'beer_name' : beer_name[0],
-        'brewery'   : brewery[0],
-        'timestamp' : timestamp[0],
+        'real_name' : real_name,
+        'beer_name' : beer_name,
+        'brewery'   : brewery,
+        'timestamp' : timestamp,
+        'rating'    : rating_info,
         'comment'   : comment[0] if comment else None
     }
 

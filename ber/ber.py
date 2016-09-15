@@ -43,6 +43,6 @@ def obtain_review_info(page_content):
 
 url= 'https://untappd.com/user/pmnphxaz/checkin/268614188'
 # url = 'https://untappd.com/user/pmnphxaz/checkin/270504313'
-# url= 'https://untappd.com/user/namslaw1/checkin/268638791'
+# url= 'https://untappd.com/user/namslaw1/checkin/268638791'k
 print grab_link_info(url)
 
